@@ -226,26 +226,18 @@ namespace SubLottery
         // Load subscriber data from drive
         private BindingList<Subscriber> ReadData(string filePath)
         {
-            try
+            using (Stream stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                using (Stream stream = File.Open(filePath, FileMode.Open))
-                {
-                    var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-                    if (stream.Length != 0)
-                    {
-                        return new BindingList<Subscriber>((BindingList<Subscriber>)formatter.Deserialize(stream));
-                    }
-                    else
-                    {
-                        return new BindingList<Subscriber>();
-                    }
+                if (stream.Length != 0)
+                {
+                    return new BindingList<Subscriber>((BindingList<Subscriber>)formatter.Deserialize(stream));
                 }
-            }
-            catch (FileNotFoundException)
-            {
-                File.Create(path);
-                return new BindingList<Subscriber>();
+                else
+                {
+                    return new BindingList<Subscriber>();
+                }
             }
         }
     }
