@@ -149,7 +149,7 @@ namespace SubLottery
             updateChances();
 
             // Update subscriber table
-            //subs = new BindingList<Subscriber>(subs);
+            subs = new BindingList<Subscriber>(subs);
             SubsTable.DataSource = subs;
 
             // Write data to file
@@ -230,7 +230,7 @@ namespace SubLottery
 
                 if (stream.Length != 0)
                 {
-                    return new BindingList<Subscriber>((List<Subscriber>)formatter.Deserialize(stream));
+                    return new BindingList<Subscriber>((BindingList<Subscriber>)formatter.Deserialize(stream));
                 }
                 else
                 {
