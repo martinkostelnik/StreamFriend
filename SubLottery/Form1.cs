@@ -13,11 +13,8 @@ namespace SubLottery
 {
     public partial class Form1 : Form
     {
-        // List with subsriber data
-        private static List<Subscriber> subs = new List<Subscriber>();
-
-        // Helper List to bind Data to Table
-        private static BindingList<Subscriber> subsBL = new BindingList<Subscriber>();
+        // List with subscriber data
+        private static BindingList<Subscriber> subs = new BindingList<Subscriber>();
 
         // Total subs given
         private int subCount = 0;
@@ -34,11 +31,8 @@ namespace SubLottery
 
             countSubs();
 
-            // Create BindingList based on the Data List
-            subsBL = new BindingList<Subscriber>(subs);
-
             // Set up the DataGridView (the table)
-            SubsTable.DataSource = subsBL;
+            SubsTable.DataSource = subs;
 
             SubsTable.RowHeadersVisible = false;
             SubsTable.Columns["Chance"].Visible = false;
@@ -141,7 +135,6 @@ namespace SubLottery
                         }
 
                         s.Subs += value;
-
                         subCount += value;
                     }
                 }
@@ -152,12 +145,12 @@ namespace SubLottery
             nameText.Text = "";
             subCountText.Text = "";
 
-            // Update winning chances of every subscriber based on the increment of subs
+            // Update winning chances of every subscriber based on the change in total subs
             updateChances();
 
             // Update subscriber table
-            subsBL = new BindingList<Subscriber>(subs);
-            SubsTable.DataSource = subsBL;
+            //subs = new BindingList<Subscriber>(subs);
+            SubsTable.DataSource = subs;
 
             // Write data to file
             WriteData("./subs.bin", subs);
@@ -166,9 +159,9 @@ namespace SubLottery
         private string getWinnerName()
         {
             Random rand = new Random();
-            double value = rand.NextDouble();
-            Console.WriteLine(value.ToString());
-            double cumulative = 0.0;
+
+            double value = rand.NextDouble(),
+                   cumulative = 0.0;
       
             List<Subscriber> sortedByChance = subs.OrderBy(o => o.Chance).ToList();
 
@@ -200,6 +193,8 @@ namespace SubLottery
         // Counts subs given by subscribers (in total)
         private void countSubs()
         {
+            subCount = 0;
+
             foreach (Subscriber s in subs)
             {
                 subCount += s.Subs;
@@ -215,8 +210,8 @@ namespace SubLottery
             }
         }
 
-        // Saves subscriber data to drive
-        private void WriteData(string filePath, List<Subscriber> subs)
+        // Save subscriber data to drive
+        private void WriteData(string filePath, BindingList<Subscriber> subs)
         {
             using (Stream stream = File.Open(filePath, FileMode.Create))
             {
@@ -226,8 +221,8 @@ namespace SubLottery
             }
         }
 
-        // Loads subscriber data from drive
-        private List<Subscriber> ReadData(string filePath)
+        // Load subscriber data from drive
+        private BindingList<Subscriber> ReadData(string filePath)
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
@@ -235,11 +230,11 @@ namespace SubLottery
 
                 if (stream.Length != 0)
                 {
-                    return (List<Subscriber>)formatter.Deserialize(stream);
+                    return new BindingList<Subscriber>((List<Subscriber>)formatter.Deserialize(stream));
                 }
                 else
                 {
-                    return new List<Subscriber>();
+                    return new BindingList<Subscriber>();
                 }
             }
         }
