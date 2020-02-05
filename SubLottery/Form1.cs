@@ -13,6 +13,8 @@ namespace SubLottery
 {
     public partial class Form1 : Form
     {
+        private readonly static string path = "./subs.bin";
+
         // List with subscriber data
         private static BindingList<Subscriber> subs = new BindingList<Subscriber>();
 
@@ -27,7 +29,7 @@ namespace SubLottery
         private void Form1_Load(object sender, EventArgs e)
         {
             // Read data from file into List
-            subs = ReadData("./subs.bin");
+            subs = ReadData(path);
 
             countSubs();
 
@@ -153,7 +155,7 @@ namespace SubLottery
             SubsTable.DataSource = subs;
 
             // Write data to file
-            WriteData("./subs.bin", subs);
+            WriteData(path, subs);
         }
 
         private string getWinnerName()
