@@ -49,13 +49,15 @@
             this.SubsTable.AllowUserToDeleteRows = false;
             this.SubsTable.AllowUserToResizeRows = false;
             this.SubsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.SubsTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.SubsTable.Location = new System.Drawing.Point(12, 12);
             this.SubsTable.Name = "SubsTable";
-            this.SubsTable.ReadOnly = true;
             this.SubsTable.RowHeadersWidth = 51;
             this.SubsTable.RowTemplate.Height = 24;
             this.SubsTable.Size = new System.Drawing.Size(271, 417);
             this.SubsTable.TabIndex = 0;
+            this.SubsTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.SubsTable_CellValueChanged);
+            this.SubsTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.SubsTable_DataError);
             // 
             // InsertButton
             // 
@@ -147,10 +149,12 @@
             this.Controls.Add(this.DrawButton);
             this.Controls.Add(this.InsertButton);
             this.Controls.Add(this.SubsTable);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Sterak - Rimworld";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.SubsTable)).EndInit();
             this.ResumeLayout(false);

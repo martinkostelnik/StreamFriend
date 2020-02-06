@@ -19,7 +19,9 @@ namespace SubLottery
         private static BindingList<Subscriber> subs = new BindingList<Subscriber>();
 
         // Total subs given
-        private int subCount = 0;
+        private static int subCount = 0;
+
+        private static bool tableLoaded = false;
 
         public Form1()
         {
@@ -40,6 +42,10 @@ namespace SubLottery
             SubsTable.Columns["Chance"].Visible = false;
             SubsTable.Columns["Name"].HeaderText = "Jméno";
             SubsTable.Columns["Subs"].HeaderText = "Počet subů";
+
+            SubsTable.Columns["Name"].ReadOnly = true;
+
+            tableLoaded = true;
         }
 
         private void SubCountText_KeyDown(object sender, KeyEventArgs e)
@@ -153,9 +159,6 @@ namespace SubLottery
             // Update subscriber table
             subs = new BindingList<Subscriber>(subs);
             SubsTable.DataSource = subs;
-
-            // Write data to file
-            WriteData(path, subs);
         }
 
         private string getWinnerName()
@@ -208,14 +211,14 @@ namespace SubLottery
         {
             foreach (Subscriber s in subs)
             {
-                s.Chance = Math.Round((double)s.Subs / subCount, 4);
+                s.Chance = Math.Round((double)s.Subs / subCount, 8);
             }
         }
 
         // Save subscriber data to drive
         private void WriteData(string filePath, BindingList<Subscriber> subs)
         {
-            using (Stream stream = File.Open(filePath, FileMode.Create))
+            using (Stream stream = File.Open(filePath, FileMode.Truncate))
             {
                 var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
@@ -239,6 +242,33 @@ namespace SubLottery
                     return new BindingList<Subscriber>();
                 }
             }
+        }
+
+        private void SubsTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (tableLoaded)
+            {
+                if (int.Parse(SubsTable.CurrentCell.Value.ToString()) <= 0)
+                {
+                    SubsTable.CurrentCell.Value = 1;
+                }
+ 
+                countSubs();
+                updateChances();
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            WriteData(path, subs);
+        }
+
+        private void SubsTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            SubsTable.CurrentCell.Value = 1;
+
+            countSubs();
+            updateChances();
         }
     }
 }
