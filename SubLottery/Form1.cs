@@ -136,14 +136,23 @@ namespace SubLottery
                 {
                     if (s.Name == name)
                     {
-                        if (s.Subs + value <= 0 || subCount + value <= 0)
+                        if (s.Subs + value == 0)
+                        {
+                            subs.Remove(s);
+                            subCount += value;
+                            Console.WriteLine(subCount);
+                            break;
+                        }
+                        else if (s.Subs + value < 0 || subCount + value < 0)
                         {
                             InsertButton.Text = "ERROR: Subscriber count would go below or to 0!";
                             return;
                         }
-
-                        s.Subs += value;
-                        subCount += value;
+                        else
+                        {
+                            s.Subs += value;
+                            subCount += value;
+                        }
                     }
                 }
             }
