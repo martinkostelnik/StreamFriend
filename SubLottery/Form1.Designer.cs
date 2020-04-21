@@ -42,6 +42,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.EnableAllButton = new System.Windows.Forms.Button();
             this.DisableAllButton = new System.Windows.Forms.Button();
+            this.ActivityButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.SubsTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,9 +64,9 @@
             // 
             // InsertButton
             // 
-            this.InsertButton.Location = new System.Drawing.Point(316, 65);
+            this.InsertButton.Location = new System.Drawing.Point(480, 65);
             this.InsertButton.Name = "InsertButton";
-            this.InsertButton.Size = new System.Drawing.Size(322, 43);
+            this.InsertButton.Size = new System.Drawing.Size(158, 43);
             this.InsertButton.TabIndex = 1;
             this.InsertButton.Text = "Přidat";
             this.InsertButton.UseVisualStyleBackColor = true;
@@ -87,7 +88,6 @@
             this.nameText.Name = "nameText";
             this.nameText.Size = new System.Drawing.Size(201, 22);
             this.nameText.TabIndex = 3;
-            this.nameText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SubCountText_KeyDown);
             // 
             // subCountText
             // 
@@ -158,11 +158,22 @@
             this.DisableAllButton.UseVisualStyleBackColor = true;
             this.DisableAllButton.Click += new System.EventHandler(this.DisableAllButton_Click);
             // 
+            // ActivityButton
+            // 
+            this.ActivityButton.Location = new System.Drawing.Point(316, 66);
+            this.ActivityButton.Name = "ActivityButton";
+            this.ActivityButton.Size = new System.Drawing.Size(158, 42);
+            this.ActivityButton.TabIndex = 11;
+            this.ActivityButton.Text = "Změnit aktivitu";
+            this.ActivityButton.UseVisualStyleBackColor = true;
+            this.ActivityButton.Click += new System.EventHandler(this.ActivityButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(668, 491);
+            this.Controls.Add(this.ActivityButton);
             this.Controls.Add(this.DisableAllButton);
             this.Controls.Add(this.EnableAllButton);
             this.Controls.Add(this.WinnerLabel);
@@ -200,6 +211,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button EnableAllButton;
         private System.Windows.Forms.Button DisableAllButton;
+        private System.Windows.Forms.Button ActivityButton;
     }
 }
 

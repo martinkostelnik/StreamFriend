@@ -401,5 +401,50 @@ namespace SubLottery
                 SubsTable.DataSource = subs;
             }
         }
+
+        // Clicking on this button toggles subscriber ACTIVITY status
+        private void ActivityButton_Click(object sender, EventArgs e)
+        {
+            string name = nameText.Text;
+
+            // Check if Name TextBox is empty
+            if (string.IsNullOrEmpty(name))
+            {
+                return;
+            }
+
+            // Subscriber exists
+            if (!isUnique(name))
+            {
+                // Iterate over all subs
+                foreach (Subscriber s in subs)
+                {
+                    // sub found
+                    if (s.Name == name)
+                    {
+                        if (s.Enabled == "Ano")
+                        {
+                            s.Enabled = "Ne";
+                            subCount -= s.Subs;
+                        }
+                        else
+                        {
+                            s.Enabled = "Ano";
+                            subCount += s.Subs;
+                        }
+
+                        updateChances();
+
+                        // Update subscriber table
+                        subs = new BindingList<Subscriber>(subs);
+                        SubsTable.DataSource = subs;
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }
