@@ -40,15 +40,18 @@ namespace SubLottery
             SubsTable.DataSource = subs;
 
             SubsTable.RowHeadersVisible = false;
-            //SubsTable.Columns["Chance"].Visible = false;
+            SubsTable.Columns["Chance"].Visible = false;
             SubsTable.Columns["Name"].HeaderText = "Jméno";
             SubsTable.Columns["Name"].ReadOnly = true;
+            SubsTable.Columns["Name"].Width = 100;   
 
             SubsTable.Columns["Subs"].HeaderText = "#";
-            SubsTable.Columns["Subs"].Width = 33;
+            SubsTable.Columns["Subs"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            SubsTable.Columns["Subs"].FillWeight = 35;
 
             SubsTable.Columns["Enabled"].HeaderText = "Aktivní";
-            SubsTable.Columns["Enabled"].Width = 50;
+            SubsTable.Columns["Enabled"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            SubsTable.Columns["Enabled"].FillWeight = 65;
             SubsTable.Columns["Enabled"].ReadOnly = true;
 
             tableLoaded = true;
@@ -60,6 +63,7 @@ namespace SubLottery
             if (e.KeyCode == Keys.Enter)
             {
                 insertSubscriber();
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -67,6 +71,7 @@ namespace SubLottery
         private void InsertButton_Click(object sender, EventArgs e)
         {
             insertSubscriber();
+            MessageBox.Show($"{InsertButton.Right} {subCountText.Right}");
         }
 
         // Clicking on this button starts the lottery

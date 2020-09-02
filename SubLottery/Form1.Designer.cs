@@ -64,7 +64,8 @@
             // 
             // InsertButton
             // 
-            this.InsertButton.Location = new System.Drawing.Point(480, 65);
+            this.InsertButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.InsertButton.Location = new System.Drawing.Point(498, 65);
             this.InsertButton.Name = "InsertButton";
             this.InsertButton.Size = new System.Drawing.Size(158, 43);
             this.InsertButton.TabIndex = 1;
@@ -91,9 +92,10 @@
             // 
             // subCountText
             // 
+            this.subCountText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.subCountText.Location = new System.Drawing.Point(538, 37);
             this.subCountText.Name = "subCountText";
-            this.subCountText.Size = new System.Drawing.Size(100, 22);
+            this.subCountText.Size = new System.Drawing.Size(118, 22);
             this.subCountText.TabIndex = 4;
             this.subCountText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SubCountText_KeyDown);
             // 
@@ -115,7 +117,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(535, 17);
+            this.label2.Location = new System.Drawing.Point(553, 17);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(79, 17);
             this.label2.TabIndex = 7;
@@ -124,7 +126,7 @@
             // WinnerLabel
             // 
             this.WinnerLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WinnerLabel.Location = new System.Drawing.Point(289, 136);
             this.WinnerLabel.Name = "WinnerLabel";
             this.WinnerLabel.Size = new System.Drawing.Size(374, 293);
@@ -150,7 +152,7 @@
             // 
             // DisableAllButton
             // 
-            this.DisableAllButton.Location = new System.Drawing.Point(480, 435);
+            this.DisableAllButton.Location = new System.Drawing.Point(498, 435);
             this.DisableAllButton.Name = "DisableAllButton";
             this.DisableAllButton.Size = new System.Drawing.Size(158, 44);
             this.DisableAllButton.TabIndex = 10;
@@ -188,7 +190,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Gterry";
+            this.Text = "Sterak - Září";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.SubsTable)).EndInit();
