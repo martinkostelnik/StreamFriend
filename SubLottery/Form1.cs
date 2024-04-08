@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SubLottery.Library.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace SubLottery
@@ -16,7 +15,7 @@ namespace SubLottery
         private readonly static string path = "./subs.bin";
 
         // List with subscriber data
-        private static BindingList<Subscriber> subs = new BindingList<Subscriber>();
+        private static SortableBindingList<Subscriber> subs = new SortableBindingList<Subscriber>();
 
         // Total subs given
         private static int subCount = 0;
@@ -43,7 +42,7 @@ namespace SubLottery
             SubsTable.Columns["Chance"].Visible = false;
             SubsTable.Columns["Name"].HeaderText = "Jméno";
             SubsTable.Columns["Name"].ReadOnly = true;
-            SubsTable.Columns["Name"].Width = 100;   
+            SubsTable.Columns["Name"].Width = 100;
 
             SubsTable.Columns["Subs"].HeaderText = "#";
             SubsTable.Columns["Subs"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -160,12 +159,12 @@ namespace SubLottery
                         if (s.Subs + value == 0)
                         {
                             subs.Remove(s);
-                            
+
                             if (s.Enabled == "Ano")
                             {
                                 subCount += value;
                             }
-                         
+
                             break;
                         }
                         // error
@@ -205,8 +204,7 @@ namespace SubLottery
             updateChances();
 
             // Update subscriber table
-            subs = new BindingList<Subscriber>(subs);
-            SubsTable.DataSource = subs;
+            SubsTable.DataSource = new SortableBindingList<Subscriber>(subs);
         }
 
         // Returns name of a winner when running the lottery
@@ -269,7 +267,7 @@ namespace SubLottery
                 }
             }
         }
-        
+
         // Updates winning chances of all ACTIVE subscribers
         private void updateChances()
         {
@@ -288,30 +286,30 @@ namespace SubLottery
         }
 
         // Save subscriber data to drive
-        private void WriteData(string filePath, BindingList<Subscriber> subs)
+        private void WriteData(string filePath, SortableBindingList<Subscriber> subs)
         {
             using (Stream stream = File.Open(filePath, FileMode.Truncate))
             {
-                var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                BinaryFormatter formatter = new BinaryFormatter();
 
-                formatter.Serialize(stream, subs);
+                formatter.Serialize(stream, new BindingList<Subscriber>(subs.ToList()));
             }
         }
 
         // Load subscriber data from drive
-        private BindingList<Subscriber> ReadData(string filePath)
+        private SortableBindingList<Subscriber> ReadData(string filePath)
         {
             using (Stream stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                BinaryFormatter formatter = new BinaryFormatter();
 
                 if (stream.Length != 0)
                 {
-                    return new BindingList<Subscriber>((BindingList<Subscriber>)formatter.Deserialize(stream));
+                    return new SortableBindingList<Subscriber>((BindingList<Subscriber>)formatter.Deserialize(stream));
                 }
                 else
                 {
-                    return new BindingList<Subscriber>();
+                    return new SortableBindingList<Subscriber>();
                 }
             }
         }
@@ -325,7 +323,7 @@ namespace SubLottery
                 {
                     SubsTable.CurrentCell.Value = 1;
                 }
- 
+
                 countSubs();
                 updateChances();
             }
@@ -362,7 +360,7 @@ namespace SubLottery
         private void EnableAllButton_Click(object sender, EventArgs e)
         {
             // Confirmation dialog
-            var confirmed = MessageBox.Show("Určitě chceš všechny subsribery aktivovat?", "Aktivovat všechny", MessageBoxButtons.YesNo);
+            DialogResult confirmed = MessageBox.Show("Určitě chceš všechny subsribery aktivovat?", "Aktivovat všechny", MessageBoxButtons.YesNo);
 
             if (confirmed == DialogResult.Yes)
             {
@@ -377,8 +375,7 @@ namespace SubLottery
                 updateChances();
 
                 // Update table
-                subs = new BindingList<Subscriber>(subs);
-                SubsTable.DataSource = subs;
+                SubsTable.DataSource = new SortableBindingList<Subscriber>(subs);
             }
         }
 
@@ -387,8 +384,8 @@ namespace SubLottery
         private void DisableAllButton_Click(object sender, EventArgs e)
         {
             // Confirmation dialog
-            var confirmed = MessageBox.Show("Určitě chceš všechny subsribery deaktivovat?", "Deaktivovat všechny", MessageBoxButtons.YesNo);
-            
+            DialogResult confirmed = MessageBox.Show("Určitě chceš všechny subsribery deaktivovat?", "Deaktivovat všechny", MessageBoxButtons.YesNo);
+
             if (confirmed == DialogResult.Yes)
             {
                 // Change active status of all subsribers to INACTIVE
@@ -402,8 +399,7 @@ namespace SubLottery
                 updateChances();
 
                 // Update table
-                subs = new BindingList<Subscriber>(subs);
-                SubsTable.DataSource = subs;
+                SubsTable.DataSource = new SortableBindingList<Subscriber>(subs);
             }
         }
 
@@ -441,14 +437,22 @@ namespace SubLottery
                         updateChances();
 
                         // Update subscriber table
-                        subs = new BindingList<Subscriber>(subs);
-                        SubsTable.DataSource = subs;
+                        SubsTable.DataSource = new SortableBindingList<Subscriber>(subs);
                     }
                 }
             }
             else
             {
                 return;
+            }
+        }
+
+        private void tbVyhledavac_TextChanged(object sender, EventArgs e)
+        {
+            if (sender is TextBox textbox)
+            {
+                // Update subscriber table
+                SubsTable.DataSource = new SortableBindingList<Subscriber>(subs.Where(x => x.Name.Contains(textbox.Text)).ToList());
             }
         }
     }
